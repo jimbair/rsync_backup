@@ -7,6 +7,7 @@
 /media/*
 /mirrors/*
 /mnt/*
+/nfs/*
 /nvme/libvirt/images/*
 /proc/*
 /run/*
