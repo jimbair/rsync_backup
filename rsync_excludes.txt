@@ -1,8 +1,10 @@
 /dev/*
 /home/danny/*
 /home/jim/.cache/*
-/home/jim/Downloads/*
+/home/jim/.local/share/containers/storage/overlay/*
 /home/jim/.local/share/Steam/*
+/home/jim/mock/*
+/home/jim/Downloads/*
 /lost+found
 /media/*
 /mirrors/*
@@ -23,6 +25,7 @@
 /var/lib/flatpak/*
 /var/lib/libvirt/images/*
 /var/lib/lxcfs/*
+/var/lib/mock/*
 /var/lib/plexmediaserver/*
 /var/lib/transmission-daemon/downloads/*
 /var/lib/transmission/Downloads/*
