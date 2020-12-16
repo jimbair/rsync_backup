@@ -1,11 +1,12 @@
 #!/bin/bash
-# A shell script to backup linux systems via rsync onto our Synology NAS
+# A shell script to backup linux systems via rsync onto our Synology
 #
-# Nothing wild; it started with excludes from the Arch wiki and I added a few
-# that met our needs. Dynamically reads the SSH config and runs rsync across all
-# hosts it finds. Also, pass it a server name for a single rsync backup run.
+# Nothing wild; it started with excludes from the Arch Wiki and I added a few
+# that met my needs. This script dynamically reads the SSH config and runs rsync
+# across all hosts it finds. Also, you can pass it the name of a specific server
+# for a single rsync backup run if troubleshooting your excludes.
 #
-# v1.02
+# v1.03
 # Jim Bair
 
 # For laptops, desktops; anything that's not up all the time
