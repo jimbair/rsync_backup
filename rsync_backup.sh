@@ -6,7 +6,7 @@
 # across all hosts it finds. Also, you can pass it the name of a specific server
 # for a single rsync backup run if troubleshooting your excludes.
 #
-# v1.03
+# v1.04
 # Jim Bair
 
 # For laptops, desktops; anything that's not up all the time
@@ -57,14 +57,17 @@ fetchLatest() {
     grep -q ${host} <<< ${intermittent} && return 0
     # If we are still here then we are not in the excludes
     echo "ERROR: unable to login to ${host}"
+    failures=$((failures+1))
     return 1
   # If SSH fails for any other reason
   elif [[ ${ec} -ne 0 ]]; then
     echo "ERROR: unable to login to ${host}"
+    failures=$((failures+1))
     return 1
   # If we login but we aren't root
   elif [[ "${user}" != 'root' ]]; then
     echo "ERROR: logged into ${host} as ${user} instead of root."
+    failures=$((failures+1))
     return 1
   fi
   
@@ -73,6 +76,7 @@ fetchLatest() {
   [[ -d "${dest}" ]] || mkdir -p ${dest}
   if [ $? -ne 0 ]; then
     echo "ERROR: Creating the missing ${dest} failed. Exiting"
+    failures=$((failures+1))
     return 1
   fi
 
