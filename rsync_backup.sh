@@ -6,7 +6,7 @@
 # across all hosts it finds. Also, you can pass it the name of a specific server
 # for a single rsync backup run if troubleshooting your excludes.
 #
-# v1.04
+# v1.05
 # Jim Bair
 
 # For laptops, desktops; anything that's not up all the time
@@ -42,7 +42,7 @@ fetchLatest() {
   host="$1"
 
   # For server names that break bash
-  [[ "${host}" == 'let' ]] && return 0
+  [[ "${host}" == 'let' ]] && continue
 
   date
 
@@ -54,7 +54,7 @@ fetchLatest() {
 
   # If SSH fails but it's in our intermittent group, then move along
   if [ ${ec} -eq 255 ]; then
-    grep -q ${host} <<< ${intermittent} && return 0
+    grep -q ${host} <<< ${intermittent} && continue
     # If we are still here then we are not in the excludes
     echo "ERROR: unable to login to ${host}"
     failures=$((failures+1))
