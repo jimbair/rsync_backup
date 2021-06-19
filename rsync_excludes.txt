@@ -21,6 +21,7 @@
 /usr/src/kernels/*
 /usr/src/linux*
 /var/db/repos/*
+/var/lib/dcontainers/*
 /var/lib/docker/*
 /var/lib/flatpak/*
 /var/lib/libvirt/images/*
