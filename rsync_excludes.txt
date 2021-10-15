@@ -20,7 +20,9 @@
 /usr/portage/*
 /usr/src/kernels/*
 /usr/src/linux*
+/var/cache/distfiles/*
 /var/db/repos/*
+/var/db/pkg/*
 /var/lib/dcontainers/*
 /var/lib/docker/*
 /var/lib/flatpak/*
