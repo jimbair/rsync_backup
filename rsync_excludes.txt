@@ -1,3 +1,4 @@
+/data/
 /dev/*
 /home/danny/*
 /home/jim/.cache/*
@@ -23,7 +24,7 @@
 /var/cache/distfiles/*
 /var/db/repos/*
 /var/db/pkg/*
-/var/lib/dcontainers/*
+/var/lib/containers/*
 /var/lib/docker/*
 /var/lib/flatpak/*
 /var/lib/libvirt/images/*
