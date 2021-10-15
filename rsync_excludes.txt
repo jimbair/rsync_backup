@@ -32,3 +32,4 @@
 /var/lib/plexmediaserver/*
 /var/lib/transmission-daemon/downloads/*
 /var/lib/transmission/Downloads/*
+/var/tmp/*
