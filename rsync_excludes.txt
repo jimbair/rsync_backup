@@ -1,4 +1,4 @@
-/data/
+/data/*
 /dev/*
 /home/danny/*
 /home/jim/.cache/*
