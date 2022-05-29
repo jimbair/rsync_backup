@@ -6,7 +6,7 @@
 # across all hosts it finds. Also, you can pass it the name of a specific server
 # for a single rsync backup run if troubleshooting your excludes.
 #
-# v1.05
+# v1.10
 # Jim Bair
 
 # For laptops, desktops; anything that's not up all the time
@@ -14,6 +14,7 @@ intermittent='desk lenovo'
 
 # Catch failures from servers that should be up all the time
 failures=0
+failed_services=''
 
 # Backups go here
 backupdir='/volume1/jim/Backups/servers'
@@ -44,7 +45,7 @@ fetchLatest() {
   # For server names that break bash
   [[ "${host}" == 'let' ]] && continue
 
-  date
+  echo "[$(date)] INFO: Attempting backup of $1"
 
   ####################
   # Sanity check ssh #
@@ -56,40 +57,46 @@ fetchLatest() {
   if [ ${ec} -eq 255 ]; then
     grep -q ${host} <<< ${intermittent} && return 0
     # If we are still here then we are not in the excludes
-    echo "ERROR: unable to login to ${host}"
+    echo "[$(date)] ERROR: unable to login to ${host}"
     failures=$((failures+1))
+	failed_services="${failed_services} $1"
     return 1
   # If SSH fails for any other reason
   elif [[ ${ec} -ne 0 ]]; then
-    echo "ERROR: unable to login to ${host}"
+    echo "[$(date)] ERROR: unable to login to ${host}"
     failures=$((failures+1))
+	failed_services="${failed_services} $1"
     return 1
   # If we login but we aren't root
   elif [[ "${user}" != 'root' ]]; then
-    echo "ERROR: logged into ${host} as ${user} instead of root."
+    echo "[$(date)] ERROR: logged into ${host} as ${user} instead of root."
     failures=$((failures+1))
+	failed_services="${failed_services} $1"
     return 1
   fi
   
   dest="${backupdir}/${host}"
-  echo -e "\nBacking up ${host} to ${dest}"
+  echo -e "\n[$(date)] Backing up ${host} to ${dest}"
   [[ -d "${dest}" ]] || mkdir -p ${dest}
   if [ $? -ne 0 ]; then
-    echo "ERROR: Creating the missing ${dest} failed. Exiting"
+    echo "[$(date)] ERROR: Creating the missing ${dest} failed. Exiting"
     failures=$((failures+1))
+	failed_services="${failed_services} $1"
     return 1
   fi
 
   # All of this shellcode just to run rsync?
-  echo "Running backup for ${host}"
+  echo "[$(date)] Running backup for ${host}"
   rsync -ave ssh --no-perms --no-owner --no-group --delete-excluded --exclude-from 'rsync_excludes.txt' ${host}:/ ${dest}
   ec=$?
   
-  date
-  echo -e "Backup for ${host} exit code: ${ec}"
+  echo -e "[$(date)] Backup for ${host} exit code: ${ec}"
 
   # Catch failures from servers that should be up all the time
-  [[ "${ec}" -ne 0 ]] && failures=$((failures+1))
+  if [[ "${ec}" -ne 0 ]]; then
+    failures=$((failures+1))
+	failed_services="${failed_services} $1"
+  fi
 
 }
 
@@ -104,5 +111,8 @@ else
 fi
 
 # All done
-[[ "${failures}" -gt 0 ]] && echo "Backup Failures: ${failures}"
+echo "[$(date)] Backup Failures: ${failures}"
+if [[ "${failures}" -gt 0 ]]; then
+  echo "[$(date)] Services: ${failed_services}"
+fi
 exit ${failures}
