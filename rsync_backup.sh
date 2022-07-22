@@ -10,7 +10,7 @@
 # Jim Bair
 
 # For laptops, desktops; anything that's not up all the time
-intermittent='desk lenovo'
+intermittent='desk lenovo xps'
 
 # Catch failures from servers that should be up all the time
 failures=0
